@@ -5,3 +5,7 @@ docker run -it \
 -v "/home/cuchoco/data_engineering/week1/ny-taxi-volume:/var/lib/postgresql/data" \
 -p 5432:5432 \
 postgres:13
+
+
+
+pgcli -h localhost -p 5432 -u root -d ny_taxi
