@@ -35,26 +35,28 @@ def main(params):
     df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
     df.to_sql(name=table_name, con=engine, if_exists='append')
 
-    stop = False
-    while not stop:
+   
+    while True:
+        t_start = time()
+        
         try:
-            t_start = time()
-            
             df = next(df_iter)
-            df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
-            df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
-            df.to_sql(name=table_name, con=engine, if_exists='append')
-
-            t_end = time()
-            print('inserted another chunk..., took %.3f second' % (t_end - t_start))
         except StopIteration:
-            print("Ingesing data job finished")
-            stop = True
+            print("Ingesting job finished")
             break
 
+        df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
+        df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+        df.to_sql(name=table_name, con=engine, if_exists='append')
+
+        t_end = time()
+        print('inserted another chunk..., took %.3f second' % (t_end - t_start))
 
 
-if __name__ == "__main__":
+        
+
+
+def Parser():
     parser = argparse.ArgumentParser(description='Ingest CSV data to Postgres')
     # user, passwd, host
     # port
@@ -68,9 +70,12 @@ if __name__ == "__main__":
     parser.add_argument('--db', help='database name for postgres')
     parser.add_argument('--table_name', help='name of the table where we will write the results to')
     parser.add_argument('--url', help='url of the csv file')
-
     args = parser.parse_args()
+    return args
 
+
+if __name__ == "__main__":
+    args = Parser()
     main(args)
 
 
