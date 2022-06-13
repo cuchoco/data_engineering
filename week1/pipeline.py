@@ -8,5 +8,4 @@ day = sys.argv[1]
 
 # some fancy stuff with pandas
 
-
 print(f'job finished succeessfully for day = {day}')
