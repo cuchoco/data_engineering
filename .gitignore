@@ -134,3 +134,7 @@ dmypy.json
 ny-taxi-volume/
 
 *.json
+
+1.2_terraform_gcp/terraform/.terraform
+1.2_terraform_gcp/terraform/terraform.tfstate
+1.2_terraform_gcp/terraform/.terraform.lock.hcl
