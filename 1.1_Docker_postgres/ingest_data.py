@@ -17,12 +17,11 @@ def main(params):
     table_name = params.table_name
     url = params.url
 
-    file_name = 'output.parquet'
     csv_name = 'output.csv'
-
+    
     # download the parquet and conver to csv
-    os.system(f"wget {url} -O {file_name}")
-    file = pq.read_table(file_name)
+    os.system(f"wget {url} -O {csv_name}")
+    file = pq.read_table(csv_name)
     file = file.to_pandas()
     file.to_csv(csv_name, index=False)
 

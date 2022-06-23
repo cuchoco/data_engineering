@@ -32,7 +32,7 @@ docker network create pg-network
 
 
 # postgres
-docker run -it \
+docker run -itd \
 -e POSTGRES_USER="root" \
 -e POSTGRES_PASSWORD="root" \
 -e POSTGRES_DB="ny_taxi" \
@@ -43,7 +43,7 @@ docker run -it \
 postgres:13
 
 # pgadmin
-docker run -it \
+docker run -itd \
 -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
 -e PGADMIN_DEFAULT_PASSWORD="root" \
 -p 8080:80 \
