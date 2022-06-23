@@ -17,10 +17,12 @@ def main(params):
     table_name = params.table_name
     url = params.url
 
+    file_name = 'output.parquet'
     csv_name = 'output.csv'
+
     # download the parquet and conver to csv
-    os.system(f"wget {url} -O {csv_name}")
-    file = pq.read_table(csv_name)
+    os.system(f"wget {url} -O {file_name}")
+    file = pq.read_table(file_name)
     file = file.to_pandas()
     file.to_csv(csv_name, index=False)
 
@@ -52,10 +54,6 @@ def main(params):
         t_end = time()
         print('inserted another chunk..., took %.3f second' % (t_end - t_start))
 
-
-        
-
-
 def Parser():
     parser = argparse.ArgumentParser(description='Ingest CSV data to Postgres')
     # user, passwd, host
@@ -72,7 +70,6 @@ def Parser():
     parser.add_argument('--url', help='url of the csv file')
     args = parser.parse_args()
     return args
-
 
 if __name__ == "__main__":
     args = Parser()
