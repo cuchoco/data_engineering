@@ -5,7 +5,7 @@ from airflow import DAG
 
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
-
+from ingest_script import ingest_callable
 
 AIRFLOW_HOME = os.environ.get("AIRFLOW_HOME", '/opt/airflow/')
 
@@ -15,18 +15,21 @@ local_workflow = DAG(
     start_date = datetime(2021, 1, 1)
 )
 
-url = "https://nyc-tlc.s3.amazonaws.com/trip+data/yellow_tripdata_2022-01.parquet"
+URL_PREFIX = "https://s3.amazonaws.com/nyc-tlc/trip+data/"
+URL_TEMPLATE = URL_PREFIX + "/yellow_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet"
+OUTPUT_FILE_TEMPLATE = AIRFLOW_HOME + '/output_{{ execution_date.strftime(\'%Y-%m\') }}.parquet'
 
 with local_workflow:
 
     wget_task = BashOperator(
         task_id ='wget',
-        bash_command=f'curl -sSL {url} > {AIRFLOW_HOME}/output.csv'
+        bash_command = f'curl -sSL {URL_TEMPLATE} > {OUTPUT_FILE_TEMPLATE}'
     )
 
-    ingest_task = BashOperator(
+    ingest_task = PythonOperator(
         task_id ='ingest',
-        bash_command=f'ls {AIRFLOW_HOME}'
+        python_callable=ingest_callable,
+
     )
 
     wget_task >> ingest_task

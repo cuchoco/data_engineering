@@ -25,7 +25,7 @@ def main(params):
     file = file.to_pandas()
     file.to_csv(csv_name, index=False)
 
-    engine = create_engine(f'postgresql://{user}:{user}@{host}:{port}/{db}')
+    engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
     engine.connect()
 
     df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
