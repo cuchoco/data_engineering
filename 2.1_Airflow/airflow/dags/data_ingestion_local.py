@@ -19,19 +19,19 @@ PG_DATABASE = os.getenv('PG_DATABASE')
 local_workflow = DAG(
     "LocalIngestionDag",
     schedule_interval = "0 6 2 * *",   # 매년 매월 2일 6시에 실행
-    start_date = datetime(2022, 1, 1)
+    start_date = datetime(2021, 1, 1)
 )
 
-URL_PREFIX = "https://nyc-tlc.s3.amazonaws.com/trip+data/"
-URL_TEMPLATE = URL_PREFIX + "/yellow_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet"
-OUTPUT_FILE_TEMPLATE = os.path.join(AIRFLOW_HOME + 'output_{{ execution_date.strftime(\'%Y-%m\') }}.parquet')
-TABLE_NAME_TEMPLATE = 'yello_taxi_{{ execution_date.strftime(\'%Y_%m\') }}'
+URL_PREFIX = "https://s3.amazonaws.com/nyc-tlc/trip+data/"
+URL_TEMPLATE = URL_PREFIX + "yellow_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet"
+OUTPUT_FILE_TEMPLATE = AIRFLOW_HOME + '/output_{{ execution_date.strftime(\'%Y-%m\') }}.parquet'
+TABLE_NAME_TEMPLATE = 'yellow_taxi_{{ execution_date.strftime(\'%Y_%m\') }}'
 
 with local_workflow:
 
     wget_task = BashOperator(
         task_id ='wget',
-        bash_command = f'curl -sSL {URL_TEMPLATE} > {OUTPUT_FILE_TEMPLATE}'
+        bash_command = f'wget {URL_TEMPLATE} -O {OUTPUT_FILE_TEMPLATE}'
     )
 
     ingest_task = PythonOperator(
