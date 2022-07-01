@@ -16,16 +16,16 @@ PG_PASSWORD = os.getenv('PG_PASSWORD')
 PG_PORT = os.getenv('PG_PORT')
 PG_DATABASE = os.getenv('PG_DATABASE')
 
-
 local_workflow = DAG(
     "LocalIngestionDag",
     schedule_interval = "0 6 2 * *",   # 매년 매월 2일 6시에 실행
-    start_date = datetime(2021, 1, 1)
+    start_date = datetime(2022, 1, 1)
 )
 
-URL_PREFIX = "https://s3.amazonaws.com/nyc-tlc/trip+data/"
+URL_PREFIX = "https://nyc-tlc.s3.amazonaws.com/trip+data/"
 URL_TEMPLATE = URL_PREFIX + "/yellow_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet"
 OUTPUT_FILE_TEMPLATE = AIRFLOW_HOME + '/output_{{ execution_date.strftime(\'%Y-%m\') }}.parquet'
+TABLE_NAME_TEMPLATE = 'yello_taxi_{{ execution_date.strftime(\'%Y_%m\') }}'
 
 with local_workflow:
 
@@ -37,6 +37,15 @@ with local_workflow:
     ingest_task = PythonOperator(
         task_id ='ingest',
         python_callable=ingest_callable,
+        op_kwargs=dict(
+            user = PG_USER,
+            password  = PG_PASSWORD,
+            host  = PG_HOST,
+            port  = PG_PORT,
+            db  = PG_DATABASE,
+            table_name  = TABLE_NAME_TEMPLATE,
+            csv_file = OUTPUT_FILE_TEMPLATE
+        ) 
 
     )
 

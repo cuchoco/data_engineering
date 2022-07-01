@@ -13,15 +13,13 @@ def ingest_callable(user, password, host,port, db, table_name, csv_file):
     engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db}')
     engine.connect()
 
-    csv_name = 'output.csv'
+    print('connection established successfully, ingesting data...')
     
-    file = pq.read_table(csv_name)
+    file = pq.read_table(csv_file)
     file = file.to_pandas()
-    file.to_csv(csv_name, index=False)
+    file.to_csv(csv_file, index=False)
 
-
-
-    df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
+    df_iter = pd.read_csv(csv_file, iterator=True, chunksize=100000)
 
     df = next(df_iter)
     df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
