@@ -140,3 +140,6 @@ ny-taxi-volume/
 1.2_terraform_gcp/terraform/.terraform.lock.hcl
 
 *.txt
+test.ipynb
+
+2.1_Airflow/airflow/logs/
