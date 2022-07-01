@@ -24,7 +24,7 @@ local_workflow = DAG(
 
 URL_PREFIX = "https://nyc-tlc.s3.amazonaws.com/trip+data/"
 URL_TEMPLATE = URL_PREFIX + "/yellow_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet"
-OUTPUT_FILE_TEMPLATE = AIRFLOW_HOME + '/output_{{ execution_date.strftime(\'%Y-%m\') }}.parquet'
+OUTPUT_FILE_TEMPLATE = os.path.join(AIRFLOW_HOME + 'output_{{ execution_date.strftime(\'%Y-%m\') }}.parquet')
 TABLE_NAME_TEMPLATE = 'yello_taxi_{{ execution_date.strftime(\'%Y_%m\') }}'
 
 with local_workflow:
