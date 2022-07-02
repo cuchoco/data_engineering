@@ -49,7 +49,8 @@ def upload_to_gcs(bucket, object_name, local_file):
 dag = DAG(
     "ZoneDataToGCS",
     schedule_interval = "@once",   #한번
-    tags=['zone-to-gcs']
+    tags=['zone-to-gcs'],
+    start_date=days_ago(1)
 )
 
 
