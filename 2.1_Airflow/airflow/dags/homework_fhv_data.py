@@ -78,7 +78,7 @@ with dag:
         python_callable=upload_to_gcs,
         op_kwargs={
             "bucket": BUCKET,
-            "object_name": f"FHV_tripData + {PARQUET_SAVE_POSTFIX}",
+            "object_name": f"FHV_tripData{PARQUET_SAVE_POSTFIX}",
             "local_file": f"{PARQUET_OUTPUT_FILE_TEMPLATE}",
         },
     )
