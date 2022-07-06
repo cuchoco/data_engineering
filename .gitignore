@@ -143,3 +143,5 @@ ny-taxi-volume/
 test.ipynb
 
 2.1_Airflow/airflow/logs/
+
+3.1_Big_query/serving_dir
