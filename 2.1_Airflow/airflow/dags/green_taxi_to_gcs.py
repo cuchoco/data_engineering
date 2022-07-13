@@ -20,10 +20,11 @@ AIRFLOW_HOME = os.environ.get("AIRFLOW_HOME", '/opt/airflow/')
 PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
 BUCKET = os.environ.get("GCP_GCS_BUCKET")
 
-URL_PREFIX = "https://d37ci6vzurychx.cloudfront.net/trip-data/"
-URL_TEMPLATE = URL_PREFIX + "yellow_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet"
 
-PARQUET_SAVE_POSTFIX = 'yellow_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet'
+URL_PREFIX = "https://d37ci6vzurychx.cloudfront.net/trip-data/"
+URL_TEMPLATE = URL_PREFIX + "green_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet"
+
+PARQUET_SAVE_POSTFIX = 'green_tripdata_{{ execution_date.strftime(\'%Y-%m\') }}.parquet'
 PARQUET_OUTPUT_FILE_TEMPLATE = os.path.join(AIRFLOW_HOME, PARQUET_SAVE_POSTFIX)
 
 
@@ -36,7 +37,7 @@ def upload_to_gcs(bucket, object_name, local_file):
 
 
 dag = DAG(
-    "yellow_taxi_data_DAG",
+    "green_taxi_data_DAG",
     schedule_interval = "@monthly",  
     start_date = datetime(2019, 12, 31),
     end_date= datetime(2020,12,31),
@@ -55,7 +56,7 @@ with dag:
         python_callable=upload_to_gcs,
         op_kwargs={
             "bucket": BUCKET,
-            "object_name": f"yellow/{PARQUET_SAVE_POSTFIX}",
+            "object_name": f"green/{PARQUET_SAVE_POSTFIX}",
             "local_file": f"{PARQUET_OUTPUT_FILE_TEMPLATE}",
         }
     )
