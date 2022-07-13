@@ -146,4 +146,4 @@ test.ipynb
 
 3.1_Big_query/serving_dir
 3.1_Big_query/airflow/logs/scheduler/latest
-2.1_Airflow/airflow/logs/scheduler/latest
+2.1_Airflow/airflow/logs
