@@ -15,7 +15,7 @@ profile: 'taxi_rides_ny'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
-seed-paths: ["data"]
+seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
@@ -34,10 +34,5 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   taxi_rides_ny:
     # Config indicated by + and applies to all files under models/example/
-    staging:
-      materialized: view
-    core:
-      materialized: table
-
-vars:
-  pa
+    example:
+      +materialized: view
