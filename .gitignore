@@ -150,3 +150,7 @@ test.ipynb
 
 *.crc
 _SUCCESS
+bin/
+lib64/
+share/
+pyvenv.cfg
